@@ -227,7 +227,7 @@ function ProjectNavLink({
         {isNext ? 'Next' : 'Previous'}
         {isNext && <ArrowUpRight size={12} strokeWidth={1.5} />}
       </span>
-      <span className="font-display text-fluid-xl tracking-tight group-hover:text-gold transition-colors duration-base ease-silk">
+      <span className="font-display text-fluid-base md:text-fluid-xl tracking-tight group-hover:text-gold transition-colors duration-base ease-silk line-clamp-1 max-w-[40vw] md:max-w-none">
         {project.title}
       </span>
     </Link>

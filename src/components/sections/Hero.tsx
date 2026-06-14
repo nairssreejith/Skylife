@@ -165,9 +165,9 @@ export default function Hero() {
           data-testid="hero-meta"
           className="absolute bottom-8 left-0 right-0 px-gutter"
         >
-          <div className="max-w-container mx-auto flex items-end justify-between text-[10px] uppercase tracking-widest text-muted">
-            <span>Geneva · Milano · Kyoto</span>
-            <ScrollHint />
+          <div className="max-w-container mx-auto flex items-end justify-between gap-4 text-[10px] uppercase tracking-widest text-muted">
+            <span className="truncate">Geneva · Milano · Kyoto</span>
+            <span className="hidden sm:block"><ScrollHint /></span>
             <span className="hidden md:inline">MMXXVI / Volume I</span>
           </div>
         </FadeUp>

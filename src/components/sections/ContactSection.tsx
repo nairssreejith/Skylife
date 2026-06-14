@@ -255,7 +255,7 @@ function ContactForm() {
               onClick={() => setIntent(i)}
               data-testid={`contact-intent-${i.toLowerCase()}`}
               className={cn(
-                'px-4 py-2 rounded-full text-[11px] uppercase tracking-widest',
+                'px-4 py-3 md:py-2 rounded-full text-[11px] uppercase tracking-widest',
                 'transition-all duration-base ease-silk',
                 intent === i
                   ? 'bg-gold text-ink border border-gold'

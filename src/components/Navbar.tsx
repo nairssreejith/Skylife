@@ -69,7 +69,11 @@ export default function Navbar() {
   useEffect(() => setOpen(false), [pathname, hash]);
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    // Defensive: stop Lenis (if active) while drawer is open so swipes inside
+    // the drawer don't drive page scroll under it
+    if (open) window.__lenis?.stop();
+    else window.__lenis?.start();
+    return () => { document.body.style.overflow = ''; window.__lenis?.start(); };
   }, [open]);
 
   const handleNavClick = (e: React.MouseEvent, id: string) => {
@@ -201,7 +205,7 @@ export default function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.35, ease: easings.luxury }}
-              className="md:hidden fixed inset-0 bg-ink/95 backdrop-blur-2xl"
+              className="md:hidden fixed inset-0 bg-ink/95 backdrop-blur-2xl overflow-y-auto overscroll-contain"
               style={{ top: scrolled ? 64 : 80 }}
             >
               <motion.nav

@@ -32,6 +32,13 @@ export default function SmoothScrollProvider({ children }: SmoothScrollProviderP
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) return;
 
+    // Skip Lenis on touch devices — native momentum scrolling is smoother
+    // than wheel-based smoothing, and overlaying both causes jank/double-handling.
+    const isTouch =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(pointer: coarse)').matches;
+    if (isTouch) return;
+
     const lenis = new Lenis({
       duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
