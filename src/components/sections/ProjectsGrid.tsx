@@ -36,7 +36,7 @@ export default function ProjectsGrid() {
           <Link
             to={`/projects/${p.slug}`}
             data-testid={`project-card-link-${p.slug}`}
-            className="group block"
+            className="group block transition-transform duration-slow ease-luxury hover:-translate-y-1"
           >
             {/* Cover */}
             <div className="relative aspect-[5/4] overflow-hidden rounded-md bg-graphite/40">

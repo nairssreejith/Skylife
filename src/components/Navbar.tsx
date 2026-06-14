@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { easings } from '@/lib/motion';
 import { scrollToId } from '@/lib/scroll';
+import Magnetic from '@/components/Magnetic';
 
 const links = [
   { id: 'home', label: 'Home' },
@@ -150,20 +151,22 @@ export default function Navbar() {
           </nav>
 
           {/* Desktop CTA */}
-          <a
-            href="/#contact"
-            onClick={(e) => handleNavClick(e, 'contact')}
-            data-testid="navbar-cta"
-            className={cn(
-              'hidden md:inline-flex items-center justify-center',
-              'px-5 py-2.5 text-[11px] uppercase tracking-widest',
-              'border border-bone/25 text-bone/90 rounded-full',
-              'transition-all duration-base ease-silk',
-              'hover:bg-gold hover:text-ink hover:border-gold hover:shadow-glow-gold'
-            )}
-          >
-            Enquire
-          </a>
+          <Magnetic strength={0.25} className="hidden md:inline-block">
+            <a
+              href="/#contact"
+              onClick={(e) => handleNavClick(e, 'contact')}
+              data-testid="navbar-cta"
+              className={cn(
+                'inline-flex items-center justify-center',
+                'px-5 py-2.5 text-[11px] uppercase tracking-widest',
+                'border border-bone/25 text-bone/90 rounded-full',
+                'transition-all duration-base ease-silk',
+                'hover:bg-gold hover:text-ink hover:border-gold hover:shadow-glow-gold'
+              )}
+            >
+              Enquire
+            </a>
+          </Magnetic>
 
           {/* Mobile toggle */}
           <button

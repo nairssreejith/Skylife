@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import { FadeUp, Stagger } from '@/components/motion';
+import Magnetic from '@/components/Magnetic';
 import { cn } from '@/lib/utils';
 
 /* ------------------------------------------------------------------
@@ -109,23 +110,25 @@ export default function ServicesSection() {
           <p className="text-[11px] uppercase tracking-widest text-muted">
             Engagements begin with a conversation.
           </p>
-          <Link
-            to="/#contact"
-            data-testid="services-cta"
-            className={cn(
-              'group inline-flex items-center gap-3',
-              'text-[11px] uppercase tracking-widest text-bone/90',
-              'transition-colors duration-base ease-silk hover:text-gold'
-            )}
-          >
-            <span className="relative">
-              Begin
-              <span className="absolute -bottom-1 left-0 h-px w-full bg-bone/30 transition-colors duration-slow ease-luxury group-hover:bg-gold" />
-            </span>
-            <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-bone/20 transition-all duration-base ease-silk group-hover:border-gold group-hover:bg-gold/10">
-              <ArrowUpRight size={12} strokeWidth={1.5} />
-            </span>
-          </Link>
+          <Magnetic strength={0.25}>
+            <Link
+              to="/#contact"
+              data-testid="services-cta"
+              className={cn(
+                'group inline-flex items-center gap-3',
+                'text-[11px] uppercase tracking-widest text-bone/90',
+                'transition-colors duration-base ease-silk hover:text-gold'
+              )}
+            >
+              <span className="relative">
+                Begin
+                <span className="absolute -bottom-1 left-0 h-px w-full bg-bone/30 transition-colors duration-slow ease-luxury group-hover:bg-gold" />
+              </span>
+              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-bone/20 transition-all duration-base ease-silk group-hover:border-gold group-hover:bg-gold/10">
+                <ArrowUpRight size={12} strokeWidth={1.5} />
+              </span>
+            </Link>
+          </Magnetic>
         </FadeUp>
       </div>
     </section>

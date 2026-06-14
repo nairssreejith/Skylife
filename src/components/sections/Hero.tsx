@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { easings } from '@/lib/motion';
 import { Stagger, FadeUp } from '@/components/motion';
+import Magnetic from '@/components/Magnetic';
 import { cn } from '@/lib/utils';
 
 /* ------------------------------------------------------------------
@@ -113,43 +114,47 @@ export default function Hero() {
 
             {/* CTAs */}
             <Stagger.Item className="mt-12 flex flex-wrap items-center gap-5">
-              <Link
-                to="/services"
-                data-testid="hero-cta-primary"
-                className={cn(
-                  'group relative inline-flex items-center gap-3',
-                  'px-7 py-4 rounded-full',
-                  'bg-gold text-ink text-[11px] uppercase tracking-widest font-medium',
-                  'transition-all duration-base ease-silk',
-                  'hover:bg-gold-deep hover:shadow-glow-gold hover:-translate-y-0.5'
-                )}
-              >
-                Discover
-                <ArrowUpRight
-                  size={16}
-                  strokeWidth={1.5}
-                  className="transition-transform duration-base ease-silk group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                />
-              </Link>
+              <Magnetic strength={0.3}>
+                <Link
+                  to="/#projects"
+                  data-testid="hero-cta-primary"
+                  className={cn(
+                    'group relative inline-flex items-center gap-3',
+                    'px-7 py-4 rounded-full',
+                    'bg-gold text-ink text-[11px] uppercase tracking-widest font-medium',
+                    'transition-all duration-base ease-silk',
+                    'hover:bg-gold-deep hover:shadow-glow-gold hover:-translate-y-0.5'
+                  )}
+                >
+                  Discover
+                  <ArrowUpRight
+                    size={16}
+                    strokeWidth={1.5}
+                    className="transition-transform duration-base ease-silk group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </Link>
+              </Magnetic>
 
-              <Link
-                to="/about"
-                data-testid="hero-cta-secondary"
-                className={cn(
-                  'group relative inline-flex items-center gap-3',
-                  'px-1 py-4 text-[11px] uppercase tracking-widest font-medium',
-                  'text-bone/85 hover:text-bone',
-                  'transition-colors duration-base ease-silk'
-                )}
-              >
-                <span className="relative">
-                  Learn more
-                  <span className="absolute -bottom-1 left-0 h-px w-full bg-bone/30 transition-all duration-slow ease-luxury group-hover:bg-gold" />
-                </span>
-                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-bone/20 transition-all duration-base ease-silk group-hover:border-gold group-hover:bg-gold/10">
-                  <ArrowUpRight size={12} strokeWidth={1.5} />
-                </span>
-              </Link>
+              <Magnetic strength={0.22}>
+                <Link
+                  to="/#about"
+                  data-testid="hero-cta-secondary"
+                  className={cn(
+                    'group relative inline-flex items-center gap-3',
+                    'px-1 py-4 text-[11px] uppercase tracking-widest font-medium',
+                    'text-bone/85 hover:text-bone',
+                    'transition-colors duration-base ease-silk'
+                  )}
+                >
+                  <span className="relative">
+                    Learn more
+                    <span className="absolute -bottom-1 left-0 h-px w-full bg-bone/30 transition-all duration-slow ease-luxury group-hover:bg-gold" />
+                  </span>
+                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-bone/20 transition-all duration-base ease-silk group-hover:border-gold group-hover:bg-gold/10">
+                    <ArrowUpRight size={12} strokeWidth={1.5} />
+                  </span>
+                </Link>
+              </Magnetic>
             </Stagger.Item>
           </Stagger>
         </div>

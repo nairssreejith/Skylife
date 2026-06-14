@@ -1,5 +1,6 @@
 import { ArrowUpRight, Mail, MapPin } from 'lucide-react';
 import { FadeUp } from '@/components/motion';
+import Magnetic from '@/components/Magnetic';
 import { cn } from '@/lib/utils';
 
 export default function ContactSection() {
@@ -54,24 +55,26 @@ export default function ContactSection() {
             value={(<>Geneva · Milano · Kyoto<br />By appointment only</>)}
           />
           <div className="flex items-end">
-            <a
-              href="mailto:atelier@skylife.example"
-              data-testid="contact-cta"
-              className={cn(
-                'group relative inline-flex items-center gap-3',
-                'px-7 py-4 rounded-full',
-                'bg-gold text-ink text-[11px] uppercase tracking-widest font-medium',
-                'transition-all duration-base ease-silk',
-                'hover:bg-gold-deep hover:shadow-glow-gold hover:-translate-y-0.5'
-              )}
-            >
-              Introduce yourself
-              <ArrowUpRight
-                size={16}
-                strokeWidth={1.5}
-                className="transition-transform duration-base ease-silk group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              />
-            </a>
+            <Magnetic strength={0.3}>
+              <a
+                href="mailto:atelier@skylife.example"
+                data-testid="contact-cta"
+                className={cn(
+                  'group relative inline-flex items-center gap-3',
+                  'px-7 py-4 rounded-full',
+                  'bg-gold text-ink text-[11px] uppercase tracking-widest font-medium',
+                  'transition-all duration-base ease-silk',
+                  'hover:bg-gold-deep hover:shadow-glow-gold hover:-translate-y-0.5'
+                )}
+              >
+                Introduce yourself
+                <ArrowUpRight
+                  size={16}
+                  strokeWidth={1.5}
+                  className="transition-transform duration-base ease-silk group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </a>
+            </Magnetic>
           </div>
         </FadeUp>
 
