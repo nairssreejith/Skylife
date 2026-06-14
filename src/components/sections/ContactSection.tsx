@@ -1,25 +1,26 @@
 import { useState, useRef, type ChangeEvent, type FormEvent } from 'react';
-import { ArrowUpRight, Mail, MapPin, MessageCircle, Phone, Check } from 'lucide-react';
+import { ArrowUpRight, Mail, MapPin, MessageCircle, Phone, Check, Instagram, Facebook } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeUp, Stagger } from '@/components/motion';
 import Magnetic from '@/components/Magnetic';
 import { cn } from '@/lib/utils';
 import { easings } from '@/lib/motion';
 
-/* ------------------------------------------------------------------
-   ContactSection — luxury two-column layout.
-   Left:  direct contact details + WhatsApp CTA
-   Right: editorial contact form (mailto under the hood, no backend)
------------------------------------------------------------------- */
-
 const COMPANY = {
-  email: 'atelier@skylife.example',
-  phone: '+41 22 000 0000',
-  whatsapp: '41220000000', // E.164 without "+", for wa.me link
-  locations: ['Geneva', 'Milano', 'Kyoto'],
+  name: 'Skylifetheamro',
+  email: 'skylifetheamro@gmail.com',
+  phone: '+91 98957 33114',
+  phoneTel: '+919895733114',
+  whatsapp: '919895733114',
+  address: 'TC 7/741(10)4, Aswathy Towers, Maruthankuzhi, Kanjirampara P.O, Thiruvananthapuram, Kerala',
+  city: 'Thiruvananthapuram, Kerala',
+  socials: {
+    facebook: 'https://www.facebook.com/SkyLifeTheamro',
+    instagram: 'https://www.instagram.com/skylifetheamro/',
+  },
 };
 
-const intents = ['Residence', 'Travel', 'Atelier', 'Other'] as const;
+const intents = ['Interior', 'Construction', 'Renovation', 'Other'] as const;
 type Intent = (typeof intents)[number];
 
 export default function ContactSection() {
@@ -53,14 +54,15 @@ export default function ContactSection() {
           </div>
 
           <h2 className="mt-8 font-display text-fluid-6xl leading-display tracking-tightest text-bone">
-            Begin a
+            Let's
             <br />
-            <span className="italic font-light text-gold">conversation.</span>
+            <span className="italic font-light text-gold">talk.</span>
           </h2>
 
           <p className="mt-8 max-w-xl text-fluid-lg leading-loose text-bone/65 font-light">
-            We answer in person, usually within two days. Introductions are
-            welcome from friends of the house.
+            Every Skylife home began with a phone call or a message. We reply
+            in person, usually the same day. Visits to the studio in
+            Maruthankuzhi are by appointment.
           </p>
         </FadeUp>
 
@@ -86,7 +88,7 @@ export default function ContactSection() {
                     icon={<Phone size={14} strokeWidth={1.5} />}
                     label="Call"
                     value={COMPANY.phone}
-                    href={`tel:${COMPANY.phone.replace(/\s/g, '')}`}
+                    href={`tel:${COMPANY.phoneTel}`}
                   />
                 </Stagger.Item>
                 <Stagger.Item>
@@ -95,9 +97,8 @@ export default function ContactSection() {
                     label="Visit"
                     value={(
                       <>
-                        {COMPANY.locations.join(' · ')}
-                        <br />
-                        <span className="text-bone/55 text-fluid-sm">By appointment only</span>
+                        Aswathy Towers, Maruthankuzhi<br />
+                        <span className="text-bone/55 text-fluid-sm">Kanjirampara P.O · Thiruvananthapuram, Kerala</span>
                       </>
                     )}
                   />
@@ -112,7 +113,7 @@ export default function ContactSection() {
               </p>
               <Magnetic strength={0.25}>
                 <a
-                  href={`https://wa.me/${COMPANY.whatsapp}?text=${encodeURIComponent('Hello Skylife — I would like to begin a conversation.')}`}
+                  href={`https://wa.me/${COMPANY.whatsapp}?text=${encodeURIComponent('Hello Skylife — I would like to begin a conversation about a project.')}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   data-testid="contact-whatsapp"
@@ -137,8 +138,32 @@ export default function ContactSection() {
                 </a>
               </Magnetic>
               <p className="mt-4 text-[10px] uppercase tracking-widest text-muted">
-                Mon–Fri · 09 → 18 CET
+                Mon–Sat · 09 → 19 IST
               </p>
+
+              {/* Socials */}
+              <div className="mt-8 flex items-center gap-3">
+                <a
+                  href={COMPANY.socials.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Skylife on Instagram"
+                  data-testid="social-instagram"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-bone/15 text-bone/75 transition-all duration-base ease-silk hover:border-gold hover:text-gold hover:bg-gold/5"
+                >
+                  <Instagram size={15} strokeWidth={1.5} />
+                </a>
+                <a
+                  href={COMPANY.socials.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Skylife on Facebook"
+                  data-testid="social-facebook"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-bone/15 text-bone/75 transition-all duration-base ease-silk hover:border-gold hover:text-gold hover:bg-gold/5"
+                >
+                  <Facebook size={15} strokeWidth={1.5} />
+                </a>
+              </div>
             </div>
           </FadeUp>
 
@@ -150,8 +175,8 @@ export default function ContactSection() {
 
         {/* ---------- Bottom strip ---------- */}
         <div className="mt-24 pt-8 border-t border-bone/[0.06] flex flex-wrap items-end justify-between gap-6 text-[10px] uppercase tracking-widest text-muted">
-          <span>© {new Date().getFullYear()} Skylife · Volume I</span>
-          <span>Crafted in quiet</span>
+          <span>© {new Date().getFullYear()} {COMPANY.name} · Trivandrum</span>
+          <span>Crafted in Kerala, since 2018</span>
         </div>
       </div>
     </section>
@@ -203,7 +228,7 @@ function ContactRow({
 function ContactForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [intent, setIntent] = useState<Intent>('Residence');
+  const [intent, setIntent] = useState<Intent>('Interior');
   const [message, setMessage] = useState('');
   const [sent, setSent] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
@@ -230,7 +255,7 @@ function ContactForm() {
     setTimeout(() => {
       setSent(false);
       formRef.current?.reset();
-      setName(''); setEmail(''); setMessage(''); setIntent('Residence');
+      setName(''); setEmail(''); setMessage(''); setIntent('Interior');
     }, 4200);
   };
 

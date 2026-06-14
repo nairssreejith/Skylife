@@ -7,13 +7,6 @@ import { Stagger, FadeUp } from '@/components/motion';
 import Magnetic from '@/components/Magnetic';
 import { cn } from '@/lib/utils';
 
-/* ------------------------------------------------------------------
-   Hero — cinematic, editorial, layered.
-   Reveals now use the reusable <Stagger>/<Stagger.Item>/<FadeUp>
-   wrappers from src/components/motion.
-   Parallax (separate concern) remains driven by useScroll/useTransform.
------------------------------------------------------------------- */
-
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -21,7 +14,6 @@ export default function Hero() {
     offset: ['start start', 'end start'],
   });
 
-  // Subtle parallax — different layers move at different rates
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '18%']);
   const markY = useTransform(scrollYProgress, [0, 1], ['0%', '-24%']);
   const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '-8%']);
@@ -33,7 +25,6 @@ export default function Hero() {
       data-testid="hero-section"
       className="relative min-h-[calc(100svh-88px)] overflow-hidden -mt-[80px] md:-mt-[88px] pt-[80px] md:pt-[88px] bg-ink"
     >
-      {/* ---------- Layer 0: background gradients (parallax) ---------- */}
       <motion.div aria-hidden style={{ y: bgY }} className="absolute inset-0 -z-20">
         <div
           className="absolute -top-40 -right-40 w-[60rem] h-[60rem] rounded-full opacity-[0.18] blur-3xl"
@@ -46,7 +37,6 @@ export default function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-ink/0 via-ink/30 to-ink" />
       </motion.div>
 
-      {/* ---------- Layer 1: oversize editorial mark (parallax) ---------- */}
       <motion.span
         aria-hidden
         style={{ y: markY }}
@@ -59,35 +49,26 @@ export default function Hero() {
         S
       </motion.span>
 
-      {/* ---------- Layer 2: hairline grid accents ---------- */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-y-0 left-[max(2rem,4vw)] w-px bg-bone/[0.05]" />
         <div className="absolute inset-y-0 right-[max(2rem,4vw)] w-px bg-bone/[0.05]" />
       </div>
 
-      {/* ---------- Layer 3: content (parallax) ---------- */}
       <motion.div
         style={{ y: contentY, opacity: fade }}
         className="relative z-10 min-h-[calc(100svh-88px)] flex items-center"
       >
         <div className="w-full max-w-container mx-auto px-gutter">
-          <Stagger
-            staggerChildren={0.09}
-            delayChildren={0.15}
-            amount={0.2}
-            className="max-w-4xl"
-          >
-            {/* Eyebrow */}
+          <Stagger staggerChildren={0.09} delayChildren={0.15} amount={0.2} className="max-w-4xl">
             <Stagger.Item
               data-testid="hero-eyebrow"
               className="flex items-center gap-4 text-[11px] uppercase tracking-widest text-muted"
             >
               <span className="h-px w-10 bg-gold/60" />
-              <span className="text-gold/90">01</span>
-              <span>Skylife Atelier · Est. 2026</span>
+              <span className="text-gold/90">Est. 2018</span>
+              <span>Skylife · Trivandrum</span>
             </Stagger.Item>
 
-            {/* Heading */}
             <Stagger.Item
               as="h1"
               data-testid="hero-heading"
@@ -96,23 +77,21 @@ export default function Hero() {
                 'text-bone'
               )}
             >
-              Elevated living,
+              Your dreams,
               <br />
-              designed for{' '}
-              <span className="italic font-light text-gold">the&nbsp;few.</span>
+              <span className="italic font-light text-gold">given a home.</span>
             </Stagger.Item>
 
-            {/* Subhead */}
             <Stagger.Item
               as="p"
               data-testid="hero-subhead"
               className="mt-8 max-w-xl text-fluid-lg leading-loose text-bone/65 font-light"
             >
-              Skylife crafts bespoke experiences for those who value timeless
-              detail and quiet luxury.
+              Skylife is a Trivandrum-based atelier shaping interiors,
+              architecture, and craft. Fifty homes, one promise — kept since
+              2018.
             </Stagger.Item>
 
-            {/* CTAs */}
             <Stagger.Item className="mt-12 flex flex-wrap items-center gap-5">
               <Magnetic strength={0.3}>
                 <Link
@@ -126,7 +105,7 @@ export default function Hero() {
                     'hover:bg-gold-deep hover:shadow-glow-gold hover:-translate-y-0.5'
                   )}
                 >
-                  Discover
+                  See our work
                   <ArrowUpRight
                     size={16}
                     strokeWidth={1.5}
@@ -137,7 +116,7 @@ export default function Hero() {
 
               <Magnetic strength={0.22}>
                 <Link
-                  to="/#about"
+                  to="/#contact"
                   data-testid="hero-cta-secondary"
                   className={cn(
                     'group relative inline-flex items-center gap-3',
@@ -147,7 +126,7 @@ export default function Hero() {
                   )}
                 >
                   <span className="relative">
-                    Learn more
+                    Let&apos;s talk
                     <span className="absolute -bottom-1 left-0 h-px w-full bg-bone/30 transition-all duration-slow ease-luxury group-hover:bg-gold" />
                   </span>
                   <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-bone/20 transition-all duration-base ease-silk group-hover:border-gold group-hover:bg-gold/10">
@@ -159,16 +138,15 @@ export default function Hero() {
           </Stagger>
         </div>
 
-        {/* ---------- Bottom-edge meta strip (delayed fade-up) ---------- */}
         <FadeUp
           delay={0.85}
           data-testid="hero-meta"
           className="absolute bottom-8 left-0 right-0 px-gutter"
         >
           <div className="max-w-container mx-auto flex items-end justify-between gap-4 text-[10px] uppercase tracking-widest text-muted">
-            <span className="truncate">Geneva · Milano · Kyoto</span>
+            <span className="truncate">50+ Projects · 50+ Clients</span>
             <span className="hidden sm:block"><ScrollHint /></span>
-            <span className="hidden md:inline">MMXXVI / Volume I</span>
+            <span className="hidden md:inline">Thiruvananthapuram, Kerala</span>
           </div>
         </FadeUp>
       </motion.div>
@@ -176,7 +154,6 @@ export default function Hero() {
   );
 }
 
-/* ------------------- tiny scroll-hint indicator ------------------- */
 function ScrollHint() {
   return (
     <div className="flex flex-col items-center gap-2 text-bone/55" aria-hidden>
