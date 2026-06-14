@@ -1,25 +1,43 @@
-import { motion } from 'framer-motion';
-import Button from '@/components/Button';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import Hero from '@/components/sections/Hero';
+import ProjectsSection from '@/components/sections/ProjectsSection';
+import AboutSection from '@/components/sections/AboutSection';
+import ServicesSection from '@/components/sections/ServicesSection';
+import ContactSection from '@/components/sections/ContactSection';
+import { scrollToId } from '@/lib/scroll';
 
+/**
+ * Single-page Home — Hero → Projects → About → Services → Contact.
+ * Each section owns a stable `id` for hash-anchor navigation.
+ * Listens for `location.hash` changes (e.g. /#about) and scrolls smoothly.
+ */
 export default function Home() {
+  const { hash, pathname } = useLocation();
+
+  useEffect(() => {
+    if (pathname !== '/') return;
+    if (!hash) {
+      // No hash: ensure we're at the top on first mount
+      window.__lenis?.scrollTo(0, { immediate: true });
+      return;
+    }
+    const id = hash.replace('#', '');
+    // Let layout settle before scrolling
+    const t = window.setTimeout(() => scrollToId(id), 80);
+    return () => window.clearTimeout(t);
+  }, [hash, pathname]);
+
   return (
-    <section className="max-w-7xl mx-auto px-6 py-24">
-      <motion.h1
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="font-display text-5xl md:text-7xl leading-tight max-w-3xl"
-      >
-        Elevated living, designed for the few.
-      </motion.h1>
-      <p className="mt-6 max-w-xl text-bone/70">
-        Skylife crafts bespoke experiences for those who value timeless detail
-        and quiet luxury.
-      </p>
-      <div className="mt-10 flex gap-4">
-        <Button>Discover</Button>
-        <Button variant="ghost">Learn more</Button>
+    <>
+      {/* Hero is its own anchored landing */}
+      <div id="home">
+        <Hero />
       </div>
-    </section>
+      <ProjectsSection />
+      <AboutSection />
+      <ServicesSection />
+      <ContactSection />
+    </>
   );
 }

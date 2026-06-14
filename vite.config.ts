@@ -12,5 +12,11 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 3000,
+    strictPort: false,
+    // Allow all hosts — required for Emergent preview proxy
+    allowedHosts: true,
+    hmr: {
+      clientPort: 443,
+    },
   },
 });
