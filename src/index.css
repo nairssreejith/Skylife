@@ -1,14 +1,100 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@import './styles/tokens.css';
+@import './styles/animations.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------------------------------------------
+   Base resets & global typography
+------------------------------------------------------------------ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
 html, body, #root { height: 100%; }
+
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: #0b0b0d;
-  color: #f5f1ea;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  font-weight: 400;
+  background-color: var(--bg-canvas);
+  color: var(--fg-primary);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'ss01', 'cv11';
+  transition: background-color var(--dur-base) var(--ease-silk),
+              color var(--dur-base) var(--ease-silk);
+}
+
+/* Display headings */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+}
+h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-normal);
+  margin: 0;
+}
+
+p { margin: 0; line-height: var(--leading-body); }
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: var(--transition-base);
+}
+
+img, svg, video { display: block; max-width: 100%; }
+
+::selection {
+  background: rgba(200, 169, 106, 0.35);
+  color: var(--fg-primary);
+}
+
+/* Custom scrollbar (subtle, on-brand) */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-canvas); }
+::-webkit-scrollbar-thumb {
+  background: rgba(245, 241, 234, 0.12);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(200, 169, 106, 0.4); }
+
+/* Focus ring — accessible + tasteful */
+:focus-visible {
+  outline: 2px solid var(--fg-accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-xs);
+}
+
+/* Section helper — applies luxury vertical rhythm */
+.sl-section {
+  padding-top: var(--section-y);
+  padding-bottom: var(--section-y);
+}
+
+.sl-container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-px);
 }

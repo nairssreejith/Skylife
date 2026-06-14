@@ -1,0 +1,115 @@
+/* ============================================================
+   Skylife — Animation Utilities
+   Pure CSS keyframes + helper classes for non-React contexts
+   and lightweight entrance animations.
+   For React + Framer Motion variants, see src/lib/motion.ts
+   ============================================================ */
+
+/* ---------- Keyframes ---------- */
+@keyframes sl-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes sl-fade-up {
+  from { opacity: 0; transform: translate3d(0, 24px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes sl-fade-down {
+  from { opacity: 0; transform: translate3d(0, -24px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes sl-rise {
+  from { opacity: 0; transform: translate3d(0, 48px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes sl-scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes sl-reveal-x {
+  from { opacity: 0; transform: translate3d(-32px, 0, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes sl-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes sl-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+@keyframes sl-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ---------- Utility classes ---------- */
+.sl-anim-fade-in   { animation: sl-fade-in   var(--dur-slow) var(--ease-luxury) both; }
+.sl-anim-fade-up   { animation: sl-fade-up   var(--dur-slow) var(--ease-luxury) both; }
+.sl-anim-fade-down { animation: sl-fade-down var(--dur-slow) var(--ease-luxury) both; }
+.sl-anim-rise      { animation: sl-rise      var(--dur-slower) var(--ease-luxury) both; }
+.sl-anim-scale-in  { animation: sl-scale-in  var(--dur-base) var(--ease-spring) both; }
+.sl-anim-reveal-x  { animation: sl-reveal-x  var(--dur-slow) var(--ease-luxury) both; }
+.sl-anim-float     { animation: sl-float 4s ease-in-out infinite; }
+
+/* Stagger delay helpers — apply to siblings */
+.sl-delay-0   { animation-delay: 0ms; }
+.sl-delay-1   { animation-delay: 80ms; }
+.sl-delay-2   { animation-delay: 160ms; }
+.sl-delay-3   { animation-delay: 240ms; }
+.sl-delay-4   { animation-delay: 320ms; }
+.sl-delay-5   { animation-delay: 400ms; }
+.sl-delay-6   { animation-delay: 560ms; }
+.sl-delay-7   { animation-delay: 720ms; }
+
+/* Reveal-on-scroll hook: toggle .is-visible via IntersectionObserver */
+.sl-reveal {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition: opacity var(--dur-slower) var(--ease-luxury),
+              transform var(--dur-slower) var(--ease-luxury);
+  will-change: opacity, transform;
+}
+.sl-reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Shimmer overlay (skeletons, gold accents) */
+.sl-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: sl-shimmer 2.4s linear infinite;
+}
+
+/* Honor reduced-motion globally */
+@media (prefers-reduced-motion: reduce) {
+  .sl-anim-fade-in,
+  .sl-anim-fade-up,
+  .sl-anim-fade-down,
+  .sl-anim-rise,
+  .sl-anim-scale-in,
+  .sl-anim-reveal-x,
+  .sl-anim-float,
+  .sl-shimmer {
+    animation: none !important;
+  }
+  .sl-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
