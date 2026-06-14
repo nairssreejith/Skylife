@@ -43,11 +43,12 @@ const services = [
   },
 ] as const;
 
-export default function Services() {
+export default function ServicesSection() {
   return (
     <section
+      id="services"
       data-testid="services-section"
-      className="relative sl-section overflow-hidden"
+      className="relative sl-section overflow-hidden scroll-mt-24"
     >
       {/* Decorative backdrop — soft gold pool, low opacity */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
@@ -109,7 +110,7 @@ export default function Services() {
             Engagements begin with a conversation.
           </p>
           <Link
-            to="/contact"
+            to="/#contact"
             data-testid="services-cta"
             className={cn(
               'group inline-flex items-center gap-3',

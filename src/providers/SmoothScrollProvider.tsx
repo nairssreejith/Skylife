@@ -1,10 +1,12 @@
 /**
  * SmoothScrollProvider — Lenis-based buttery scroll for the whole app.
  *
- * Mount once at the root (already wired in src/main.tsx). It:
- *   - drives Lenis on requestAnimationFrame
- *   - bridges Lenis with GSAP's ticker so ScrollTrigger stays in sync
- *   - respects prefers-reduced-motion (skips smoothing entirely)
+ * Mounts Lenis at the root, drives it on rAF, bridges with GSAP ticker so
+ * ScrollTrigger stays in sync. Exposes the instance on `window.__lenis` so
+ * navbar / anchor links can call `lenis.scrollTo(target)` from anywhere
+ * without prop-drilling a context.
+ *
+ * Respects prefers-reduced-motion (skips smoothing entirely).
  */
 import { useEffect, type ReactNode } from 'react';
 import Lenis from 'lenis';
@@ -12,6 +14,12 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
+
+declare global {
+  interface Window {
+    __lenis?: Lenis;
+  }
+}
 
 interface SmoothScrollProviderProps {
   children: ReactNode;
@@ -26,13 +34,13 @@ export default function SmoothScrollProvider({ children }: SmoothScrollProviderP
 
     const lenis = new Lenis({
       duration: 1.1,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // ease-out expo
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 1,
       touchMultiplier: 1.4,
     });
+    window.__lenis = lenis;
 
-    // Keep GSAP ScrollTrigger in sync with Lenis
     lenis.on('scroll', ScrollTrigger.update);
 
     const raf = (time: number) => {
@@ -44,6 +52,7 @@ export default function SmoothScrollProvider({ children }: SmoothScrollProviderP
     return () => {
       gsap.ticker.remove(raf);
       lenis.destroy();
+      window.__lenis = undefined;
     };
   }, []);
 
