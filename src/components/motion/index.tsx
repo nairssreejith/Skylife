@@ -1,13 +1,17 @@
 /**
- * Motion wrappers — thin, opinionated Framer Motion helpers
- * built on the shared variants in src/lib/motion.ts.
+ * Reveal-on-scroll wrappers — thin, opinionated Framer Motion helpers
+ * built on shared variants in src/lib/motion.ts.
+ *
+ * Performance: each instance uses `whileInView` with `viewport.once: true`,
+ * so the IntersectionObserver detaches after the first reveal. No re-renders
+ * on subsequent scroll. Animations are GPU-friendly (opacity + transform).
  *
  * Usage:
- *   <Reveal>...</Reveal>                 // fadeUp on scroll into view
+ *   <FadeUp>...</FadeUp>                       // shorthand for fade-up
  *   <Reveal variant="rise" delay={0.1}>...</Reveal>
  *   <Stagger>
  *     <Stagger.Item>...</Stagger.Item>
- *     <Stagger.Item>...</Stagger.Item>
+ *     <Stagger.Item as="h1">Heading</Stagger.Item>
  *   </Stagger>
  */
 import { motion, type HTMLMotionProps, type Variants } from 'framer-motion';
@@ -25,6 +29,10 @@ import {
 
 type VariantName = 'fadeIn' | 'fadeUp' | 'fadeDown' | 'rise' | 'scaleIn' | 'revealX';
 
+type MotionTagName =
+  | 'div' | 'section' | 'article' | 'header' | 'footer'
+  | 'span' | 'li' | 'p' | 'h1' | 'h2' | 'h3' | 'h4';
+
 const variantMap: Record<VariantName, Variants> = {
   fadeIn,
   fadeUp,
@@ -34,11 +42,12 @@ const variantMap: Record<VariantName, Variants> = {
   revealX,
 };
 
-/* ---------------- <Reveal> ---------------- */
-interface RevealProps extends Omit<HTMLMotionProps<'div'>, 'variants' | 'initial' | 'whileInView' | 'viewport'> {
+/* ---------------- <Reveal> — single element reveal on scroll ---------------- */
+interface RevealProps
+  extends Omit<HTMLMotionProps<'div'>, 'variants' | 'initial' | 'whileInView' | 'viewport'> {
   variant?: VariantName;
   delay?: number;
-  as?: 'div' | 'section' | 'article' | 'span' | 'li' | 'p' | 'header' | 'footer';
+  as?: MotionTagName;
   amount?: number;
   once?: boolean;
   children: ReactNode;
@@ -69,8 +78,14 @@ export function Reveal({
   );
 }
 
-/* ---------------- <Stagger> ---------------- */
-interface StaggerProps extends Omit<HTMLMotionProps<'div'>, 'variants' | 'initial' | 'whileInView' | 'viewport'> {
+/* ---------------- <FadeUp> — clearer alias for the most common case ---------------- */
+export function FadeUp(props: Omit<RevealProps, 'variant'>) {
+  return <Reveal variant="fadeUp" {...props} />;
+}
+
+/* ---------------- <Stagger> — container that orchestrates children ---------------- */
+interface StaggerProps
+  extends Omit<HTMLMotionProps<'div'>, 'variants' | 'initial' | 'whileInView' | 'viewport'> {
   staggerChildren?: number;
   delayChildren?: number;
   amount?: number;
@@ -102,10 +117,10 @@ export function Stagger({
   );
 }
 
-/* ---------------- <Stagger.Item> ---------------- */
+/* ---------------- <Stagger.Item> — child of <Stagger>, picks up parent's orchestration ---------------- */
 interface StaggerItemProps extends Omit<HTMLMotionProps<'div'>, 'variants'> {
   variant?: VariantName;
-  as?: 'div' | 'li' | 'span' | 'article';
+  as?: MotionTagName;
   children: ReactNode;
 }
 

@@ -3,25 +3,15 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { easings } from '@/lib/motion';
+import { Stagger, FadeUp } from '@/components/motion';
 import { cn } from '@/lib/utils';
 
 /* ------------------------------------------------------------------
    Hero — cinematic, editorial, layered.
-   Existing copy preserved:
-     • "Elevated living, designed for the few."
-     • "Skylife crafts bespoke experiences..."
-     • CTAs: Discover / Learn more
+   Reveals now use the reusable <Stagger>/<Stagger.Item>/<FadeUp>
+   wrappers from src/components/motion.
+   Parallax (separate concern) remains driven by useScroll/useTransform.
 ------------------------------------------------------------------ */
-
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.09, delayChildren: 0.15 } },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: easings.luxury } },
-};
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -43,28 +33,15 @@ export default function Hero() {
       className="relative min-h-[calc(100svh-88px)] overflow-hidden -mt-[80px] md:-mt-[88px] pt-[80px] md:pt-[88px] bg-ink"
     >
       {/* ---------- Layer 0: background gradients (parallax) ---------- */}
-      <motion.div
-        aria-hidden
-        style={{ y: bgY }}
-        className="absolute inset-0 -z-20"
-      >
-        {/* warm radial pool top-right */}
+      <motion.div aria-hidden style={{ y: bgY }} className="absolute inset-0 -z-20">
         <div
           className="absolute -top-40 -right-40 w-[60rem] h-[60rem] rounded-full opacity-[0.18] blur-3xl"
-          style={{
-            background:
-              'radial-gradient(closest-side, rgba(200,169,106,0.55), transparent 70%)',
-          }}
+          style={{ background: 'radial-gradient(closest-side, rgba(200,169,106,0.55), transparent 70%)' }}
         />
-        {/* cool deep glow bottom-left */}
         <div
           className="absolute -bottom-60 -left-40 w-[50rem] h-[50rem] rounded-full opacity-[0.20] blur-3xl"
-          style={{
-            background:
-              'radial-gradient(closest-side, rgba(20,20,24,1), transparent 70%)',
-          }}
+          style={{ background: 'radial-gradient(closest-side, rgba(20,20,24,1), transparent 70%)' }}
         />
-        {/* vertical vignette */}
         <div className="absolute inset-0 bg-gradient-to-b from-ink/0 via-ink/30 to-ink" />
       </motion.div>
 
@@ -87,32 +64,31 @@ export default function Hero() {
         <div className="absolute inset-y-0 right-[max(2rem,4vw)] w-px bg-bone/[0.05]" />
       </div>
 
-      {/* ---------- Layer 3: content ---------- */}
+      {/* ---------- Layer 3: content (parallax) ---------- */}
       <motion.div
         style={{ y: contentY, opacity: fade }}
         className="relative z-10 min-h-[calc(100svh-88px)] flex items-center"
       >
         <div className="w-full max-w-container mx-auto px-gutter">
-          <motion.div
-            variants={container}
-            initial="hidden"
-            animate="visible"
+          <Stagger
+            staggerChildren={0.09}
+            delayChildren={0.15}
+            amount={0.2}
             className="max-w-4xl"
           >
             {/* Eyebrow */}
-            <motion.div
-              variants={item}
-              className="flex items-center gap-4 text-[11px] uppercase tracking-widest text-muted"
+            <Stagger.Item
               data-testid="hero-eyebrow"
+              className="flex items-center gap-4 text-[11px] uppercase tracking-widest text-muted"
             >
               <span className="h-px w-10 bg-gold/60" />
               <span className="text-gold/90">01</span>
               <span>Skylife Atelier · Est. 2026</span>
-            </motion.div>
+            </Stagger.Item>
 
             {/* Heading */}
-            <motion.h1
-              variants={item}
+            <Stagger.Item
+              as="h1"
               data-testid="hero-heading"
               className={cn(
                 'mt-8 font-display text-fluid-6xl leading-display tracking-tightest',
@@ -123,23 +99,20 @@ export default function Hero() {
               <br />
               designed for{' '}
               <span className="italic font-light text-gold">the&nbsp;few.</span>
-            </motion.h1>
+            </Stagger.Item>
 
             {/* Subhead */}
-            <motion.p
-              variants={item}
+            <Stagger.Item
+              as="p"
               data-testid="hero-subhead"
               className="mt-8 max-w-xl text-fluid-lg leading-loose text-bone/65 font-light"
             >
               Skylife crafts bespoke experiences for those who value timeless
               detail and quiet luxury.
-            </motion.p>
+            </Stagger.Item>
 
             {/* CTAs */}
-            <motion.div
-              variants={item}
-              className="mt-12 flex flex-wrap items-center gap-5"
-            >
+            <Stagger.Item className="mt-12 flex flex-wrap items-center gap-5">
               <Link
                 to="/services"
                 data-testid="hero-cta-primary"
@@ -177,25 +150,22 @@ export default function Hero() {
                   <ArrowUpRight size={12} strokeWidth={1.5} />
                 </span>
               </Link>
-            </motion.div>
-          </motion.div>
+            </Stagger.Item>
+          </Stagger>
         </div>
 
-        {/* ---------- Bottom-edge meta strip ---------- */}
-        <motion.div
-          variants={item}
-          initial="hidden"
-          animate="visible"
-          transition={{ duration: 1, ease: easings.luxury, delay: 0.9 }}
-          className="absolute bottom-8 left-0 right-0 px-gutter"
+        {/* ---------- Bottom-edge meta strip (delayed fade-up) ---------- */}
+        <FadeUp
+          delay={0.85}
           data-testid="hero-meta"
+          className="absolute bottom-8 left-0 right-0 px-gutter"
         >
           <div className="max-w-container mx-auto flex items-end justify-between text-[10px] uppercase tracking-widest text-muted">
             <span>Geneva · Milano · Kyoto</span>
             <ScrollHint />
             <span className="hidden md:inline">MMXXVI / Volume I</span>
           </div>
-        </motion.div>
+        </FadeUp>
       </motion.div>
     </section>
   );
